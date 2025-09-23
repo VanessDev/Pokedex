@@ -4,14 +4,19 @@
 
 {# {{ dump(pokemons) }} #}
 
+<a href={{path('pokemon_new')}}>Ajouter pokemon</a>
 
 <main>
+
 {% for pokemon in pokemons %}
     <article>
         <h2>{{pokemon.name}}</h2>
         <p>{{pokemon.description}}</p>
         <span>{{pokemon.lvl}}</span>
         <span>{{pokemon.type}}</span>
+        <a href="{{ path('pokemon_show', {'id': pokemon.id }) }}">voir {{ pokemon.name}}</a>
     </article>
+    
 {% endfor %}
 </main>
+
