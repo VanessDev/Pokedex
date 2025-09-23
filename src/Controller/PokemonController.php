@@ -72,11 +72,11 @@ final class PokemonController extends AbstractController
     public function delete(int $id, Request $request, Pokemon $pokemon, EntityManagerInterface $em)
     {
 
-        if ($this->isCsrfTokenValid('delete' . $pokemon->getId(), $request->request->get('token'))) {
+        if ($this->isCsrfTokenValid('delete' . $id, $request->request->get('_token'))) {
             $em->remove($pokemon);
             $em->flush();
 
-            return $this->redirectToRoute('pokemons');
+            return $this->redirectToRoute('Pokemons');
         } else {
             dd('token pas bon');
         }
