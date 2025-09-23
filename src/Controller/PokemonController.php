@@ -69,9 +69,15 @@ final class PokemonController extends AbstractController
     }
 
     #[Route('/pokemon/delete/{id}', name: 'pokemon_delete')]
-    public function delete(int $id)
+    public function delete(int $id, Request $request)
     {
-        dd('endpoint de supprimer',$id);
+
+        if ($this->isCsrfTokenValid('delete' . $id, $request->request->get('token'))) {
+            dd('token valid');
+        } else {
+            dd('token pas bon');
+        }
+        dd('endpoint de supprimer', $id);
     }
 
 }
