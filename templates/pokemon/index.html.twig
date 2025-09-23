@@ -1,0 +1,17 @@
+<h1>Liste des pokémons</h1>
+
+{# faire une boucle pour afficher chazque pokemon #}
+
+{# {{ dump(pokemons) }} #}
+
+
+<main>
+{% for pokemon in pokemons %}
+    <article>
+        <h2>{{pokemon.name}}</h2>
+        <p>{{pokemon.description}}</p>
+        <span>{{pokemon.lvl}}</span>
+        <span>{{pokemon.type}}</span>
+    </article>
+{% endfor %}
+</main>
