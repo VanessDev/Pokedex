@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 final class PokemonController extends AbstractController
 {
     //afficher tous les pokemons
-    #[Route('/pokemon',name:'Pokemons', methods:'GET')]
+    #[Route('/pokemon', name: 'Pokemons', methods: 'GET')]
     public function index(PokemonRepository $pokemonrepo): Response
     {
         $pokemons = $pokemonrepo->findAll();
@@ -24,19 +24,19 @@ final class PokemonController extends AbstractController
     }
 
     //afficher un pokemon par son ID
-    #[Route('/pokemon/show/{id}', name: "pokemon_show", methods:'GET')]
-    public function show(PokemonRepository $PokemonRepository,int $id)
+    #[Route('/pokemon/show/{id}', name: "pokemon_show", methods: 'GET')]
+    public function show(PokemonRepository $PokemonRepository, int $id)
     {
-    $pokemon = $PokemonRepository ->findOneBy(['id' => $id]);
-    return $this->render('pokemon/show.html.twig',[
-        'pokemon'=> $pokemon
-    ]);
+        $pokemon = $PokemonRepository->findOneBy(['id' => $id]);
+        return $this->render('pokemon/show.html.twig', [
+            'pokemon' => $pokemon
+        ]);
     }
 
-//ajout new pokemon 
-#[Route('/pokemon/new',name:'pokemon_new', methods:'GET' , 'POST')] 
-  public function new(Request $REQUEST, EntityManagerInterface $em)
-{
+    //ajout new pokemon 
+    #[Route('/pokemon/new', name: 'pokemon_new')]
+    public function new(Request $REQUEST, EntityManagerInterface $em)
+    {
         // je declare une instance + variable de POKEMON
         $pokemon = new Pokemon();
 
@@ -47,26 +47,33 @@ final class PokemonController extends AbstractController
         // dd($pokemon);
 
         //la methode create form permet de recuperer le form à partir du form type
-        $formPokemon=$this->createForm(PokemonType::class,$pokemon);
+        $formPokemon = $this->createForm(PokemonType::class, $pokemon);
         //on verifie s'il est soumis grâce à la request
         $formPokemon->handleRequest($REQUEST);
         //isValid verifie si tout est ok
-        if($formPokemon->isSubmitted() && $formPokemon->isValid()) {
+        if ($formPokemon->isSubmitted() && $formPokemon->isValid()) {
             //em = entity manager(doctrine)/ persist prepare requettes
             $em->persist($pokemon);
             //flush execute les requetes
             $em->flush();
-        dd('pokemon enregistré');
-        //redirige vers la page apres envoie du nouveau Pokemon
-        return $this->redirectToRoute('pokemons');
-}
+            dd('pokemon enregistré');
+            //redirige vers la page apres envoie du nouveau Pokemon
+            return $this->redirectToRoute('pokemons');
+        }
         //renvoie le formulaire à la view (url)
-       return $this-> render('pokemon/new.html.twig',[
+        return $this->render('pokemon/new.html.twig', [
 
-           'formPokemon' => $formPokemon
+            'formPokemon' => $formPokemon
         ]);
-        
-}
+
+    }
+
+    #[Route('/pokemon/delete/{id}', name: 'pokemon_delete')]
+    public function delete(int $id)
+    {
+        dd('endpoint de supprimer',$id);
+    }
+
 }
 
 

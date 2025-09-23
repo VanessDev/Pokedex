@@ -15,8 +15,15 @@
         <span>{{pokemon.lvl}}</span>
         <span>{{pokemon.type}}</span>
         <a href="{{ path('pokemon_show', {'id': pokemon.id }) }}">voir {{ pokemon.name}}</a>
+        <form action="{{ path('pokemon_delete', {'id' : pokemon.id}) }}" method="POST">
+            <input type="submit" value="supprimer">
+        </form>
     </article>
-    
+
 {% endfor %}
+
 </main>
 
+<style>
+    
+</style>
