@@ -83,12 +83,16 @@ final class PokemonController extends AbstractController
     }
 
 
-    #[Route('/pokemon/{id}/edit')]
+    #[Route('/pokemon/{id}/edit', name: 'pokemon_edit')]
     // j'ai ma variable Pokemon de prete
-    public function edit(Pokemon $pokemon)
+    public function edit(Pokemon $pokemon, Request $request, EntityManagerInterface $em)
     {
         $form = $this->createForm(PokemonType::class, $pokemon);
-
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->flush();
+            return $this->redirectToRoute('Pokemons');
+        }
         return $this->render('pokemon/edit.html.twig', [
             'form' => $form
 

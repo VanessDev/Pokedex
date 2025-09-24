@@ -14,7 +14,8 @@
         <p>{{pokemon.description}}</p>
         <span>{{pokemon.lvl}}</span>
         <span>{{pokemon.type}}</span>
-        <a href="{{ path('pokemon_show', {'id': pokemon.id }) }}">voir {{ pokemon.name}}</a>
+        <a href="{{ path('pokemon_show', {'id' : pokemon.id})}}">voir {{pokemon.name}}</a>
+        <a href="{{ path('pokemon_edit', {'id': pokemon.id }) }}">modifier {{ pokemon.name}}</a>
         {% include "pokemon/_delete_form.html.twig" %}
     </article>
 
