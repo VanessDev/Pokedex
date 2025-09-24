@@ -82,6 +82,21 @@ final class PokemonController extends AbstractController
         }
     }
 
+
+    #[Route('/pokemon/{id}/edit')]
+    // j'ai ma variable Pokemon de prete
+    public function edit(Pokemon $pokemon)
+    {
+        $form = $this->createForm(PokemonType::class, $pokemon);
+
+        return $this->render('pokemon/edit.html.twig', [
+            'form' => $form
+
+        ]);
+
+    }
 }
+
+
 
 
