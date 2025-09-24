@@ -11,10 +11,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
+#[Route('/pokemon')]
 final class PokemonController extends AbstractController
 {
     //afficher tous les pokemons
-    #[Route('/pokemon', name: 'Pokemons', methods: 'GET')]
+    #[Route('/', name: 'Pokemons', methods: 'GET')]
     public function index(PokemonRepository $pokemonrepo): Response
     {
         $pokemons = $pokemonrepo->findAll();
@@ -24,7 +25,7 @@ final class PokemonController extends AbstractController
     }
 
     //afficher un pokemon par son ID
-    #[Route('/pokemon/show/{id}', name: "pokemon_show", methods: 'GET')]
+    #[Route('/show/{id}', name: "pokemon_show", methods: 'GET')]
     public function show(PokemonRepository $PokemonRepository, int $id)
     {
         $pokemon = $PokemonRepository->findOneBy(['id' => $id]);
@@ -34,7 +35,7 @@ final class PokemonController extends AbstractController
     }
 
     //ajout new pokemon 
-    #[Route('/pokemon/new', name: 'pokemon_new')]
+    #[Route('/new', name: 'pokemon_new')]
     public function new(Request $REQUEST, EntityManagerInterface $em)
     {
         // je declare une instance + variable de POKEMON
@@ -68,22 +69,25 @@ final class PokemonController extends AbstractController
 
     }
 
-    #[Route('/pokemon/delete/{id}', name: 'pokemon_delete')]
+    #[Route('/delete/{id}', name: 'pokemon_delete')]
     public function delete(int $id, Request $request, Pokemon $pokemon, EntityManagerInterface $em)
     {
 
         if ($this->isCsrfTokenValid('delete' . $id, $request->request->get('_token'))) {
             $em->remove($pokemon);
             $em->flush();
+             $this->addFlash('success', 'bravo votre pokemon a ete tué');
 
             return $this->redirectToRoute('Pokemons');
         } else {
-            dd('token pas bon');
+            $this->addFlash('error','echec de la suppression');
+            return$this->redirectToRoute('Pokemons');
+          
         }
     }
 
 
-    #[Route('/pokemon/{id}/edit', name: 'pokemon_edit')]
+    #[Route('/{id}/edit', name: 'pokemon_edit')]
     // j'ai ma variable Pokemon de prete
     public function edit(Pokemon $pokemon, Request $request, EntityManagerInterface $em)
     {
@@ -91,6 +95,7 @@ final class PokemonController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $em->flush();
+            $this->addFlash('success', 'bravo votre pokemon a ete modifié');
             return $this->redirectToRoute('Pokemons');
         }
         return $this->render('pokemon/edit.html.twig', [

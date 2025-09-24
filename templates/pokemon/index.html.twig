@@ -6,6 +6,14 @@
 
 <a href={{path('pokemon_new')}}>Ajouter pokemon</a>
 
+{% for label, messages in app.flashes %}
+{% for message in messages %}
+<div>
+    {{message}}
+</div>
+{% endfor %}
+{% endfor %}
+
 <main>
 
 {% for pokemon in pokemons %}
